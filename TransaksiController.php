@@ -8,11 +8,28 @@ use Illuminate\Support\Facades\Validator;
 
 class TransaksiController extends Controller
 {
+    public function show()
+    {
+        $data_transaksi=Transaksi::join('customer','customer.id_pembeli','transaksi.id_pembeli')->get();
+        return Response()->json($data_transaksi);
+    }
+    public function detail($id_transaksi)
+    {
+        if(Transaksi::where('id',$id_transaksi)->exists()){
+            $data_transaksi= Transaksi::join('customer','customer.id_pembeli','transaksi.id_pembeli')
+                                     ->where('transaksi.id_transaksi','=',$id_transaksi)
+                                     ->get();
+            
+            return Response()->json($data_customer);
+        }
+        else{
+            return Response()->json(['message'=>'tidak ditemukan']);
+        }
+    }
     public function store(Request $request)
     {
         $validator=Validator::make($request->all(),
             [
-                'id_transaksi' => 'required',
                 'tanggal_transaksi' => 'required',
                 'keterangan' => 'required',
                 'id_pembeli' => 'required'
@@ -22,7 +39,6 @@ class TransaksiController extends Controller
             return Response()->json($validator->errors());
         }
         $simpan = Transaksi::create([
-            'id_transaksi' => $request->id_transaksi,
             'tanggal_transaksi' => $request->tanggal_transaksi,
             'keterangan' => $request->keterangan,
             'id_pembeli' => $request->id_pembeli,

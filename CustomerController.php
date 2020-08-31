@@ -8,11 +8,28 @@ use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
+    public function show()
+    {
+        $data_customer=Customer::join('barang','barang.id_barang','customer.id_barang')->get();
+        return Response()->json($data_customer);
+    }
+    public function detail($id_pembeli)
+    {
+        if(Customer::where('id',$id_pembeli)->exists()){
+            $data_customer= Customer::join('barang','barang.id_barang','customer.id_barang')
+                                     ->where('customer.id_pembeli','=',$id_pembeli)
+                                     ->get();
+            
+            return Response()->json($data_customer);
+        }
+        else{
+            return Response()->json(['message'=>'tidak ditemukan']);
+        }
+    }
     public function store(Request $request)
     {
         $validator=Validator::make($request->all(),
             [
-                'id_pembeli' => 'required',
                 'nama_pembeli' => 'required',
                 'alamat_pembeli' => 'required',
                 'no_telp' => 'required',
@@ -23,7 +40,6 @@ class CustomerController extends Controller
             return Response()->json($validator->errors());
         }
         $simpan = Customer::create([
-            'id_pembeli' => $request->id_pembeli,
             'nama_pembeli' => $request->nama_pembeli,
             'alamat_pembeli' => $request->alamat_pembeli,
             'no_telp' => $request->no_telp,

@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Validator;
 
 class BarangController extends Controller
 {
+    public function show()
+    {
+        return Barang::all();
+    }
     public function store(Request $request)
     {
         $validator=Validator::make($request->all(),
