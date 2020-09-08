@@ -52,4 +52,29 @@ class TransaksiController extends Controller
             return Response()->json(['status' => 0]);
         }
     }
+    public function update($id_transaksi, Request $request)
+        {
+            $validator=Validator::make($request->all(),
+                [
+                'tanggal_transaksi' => 'required',
+                'keterangan' => 'required',
+                'id_pembeli' => 'required'
+                ]
+            );
+            if($validator->fails()) {
+                return Response()->json($validator->errors());
+            }
+            $ubah = Transaksi::where('id_pembeli', $id_transaksi)->update([
+                'tanggal_transaksi' => $request->tanggal_transaksi,
+                'keterangan' => $request->keterangan,
+                'id_pembeli' => $request->id_pembeli,
+            ]);
+        
+            if($ubah) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
+            }
+        }
 }

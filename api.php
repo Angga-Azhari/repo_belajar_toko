@@ -23,7 +23,9 @@ Route::post('/barang', 'BarangController@store');
 Route::post('/customer', 'CustomerController@store');
 Route::get('/customer', 'CustomerController@show');
 Route::get('/customer/{id_pembeli}', 'CustomerController@detail');
+Route::put('/customer/{id_pembeli}', 'CustomerController@update');
 
 Route::get('/transaksi', 'TransaksiController@show');
 Route::get('/transaksi/{id_transaksi}', 'TransaksiController@detail');
 Route::post('/transaksi', 'TransaksiController@store');
+Route::put('/transaksi/{id_transaksi}', 'TransaksiController@update');
