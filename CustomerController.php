@@ -15,7 +15,7 @@ class CustomerController extends Controller
     }
     public function detail($id_pembeli)
     {
-        if(Customer::where('id',$id_pembeli)->exists()){
+        if(Customer::where('id_',$id_pembeli)->exists()){
             $data_customer= Customer::join('barang','barang.id_barang','customer.id_barang')
                                      ->where('customer.id_pembeli','=',$id_pembeli)
                                      ->get();
@@ -67,7 +67,7 @@ class CustomerController extends Controller
             if($validator->fails()) {
                 return Response()->json($validator->errors());
             }
-            $ubah = Customer::where('id_barang', $id_pembeli)->update([
+            $ubah = Customer::where('id_barang ', $id_pembeli)->update([
                 'nama_pembeli' => $request->nama_pembeli,
                 'alamat_pembeli' => $request->alamat_pembeli,
                 'no_telp' => $request->no_telp,
@@ -79,6 +79,16 @@ class CustomerController extends Controller
             }
             else {
                 return Response()->json(['status' => 0]);
+            }
+        }
+        public function destroy($id_pembeli)
+            {
+                $hapus = Customer::where('id_pembeli', $id_pembeli)->delete();
+                if($hapus) {
+                    return Response()->json(['status' => 1]);
+                }
+                else {
+                    return Response()->json(['status' => 0]);
             }
         }
 }

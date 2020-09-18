@@ -77,4 +77,14 @@ class TransaksiController extends Controller
                 return Response()->json(['status' => 0]);
             }
         }
+        public function destroy($id_transaksi)
+            {
+                $hapus = Transaksi::where('id_transaksi', $id_transaksi)->delete();
+                if($hapus) {
+                    return Response()->json(['status' => 1]);
+                }
+                else {
+                    return Response()->json(['status' => 0]);
+            }
+        }
 }
