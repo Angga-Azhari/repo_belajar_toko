@@ -1,21 +1,11 @@
 <?php
 
 use Illuminate\Http\Request;
+Route::post('/register', 'UserController@register');
+Route::post('/login', 'UserController@login');
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::group(['middleware' => ['jwt.verify']], function ()
+{
 
 Route::get('/barang', 'BarangController@show');
 Route::post('/barang', 'BarangController@store');
@@ -33,3 +23,4 @@ Route::get('/transaksi/{id_transaksi}', 'TransaksiController@detail');
 Route::post('/transaksi', 'TransaksiController@store');
 Route::put('/transaksi/{id_transaksi}', 'TransaksiController@update');
 Route::delete('/transaksi/{id_transaksi}', 'TransaksiController@destroy');
+});
